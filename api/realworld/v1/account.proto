@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package account.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/shencw/kratos-realworld/api/account/v1;v1";
+
+service Account  {
+  rpc Accounts (AccountsRequest) returns (AccountsReply) {
+    option(google.api.http) = {
+      get: "/api/accounts",
+    };
+  }
+}
+
+message AccountsReply {
+  message Account {
+    int32 ID = 1;
+    int32 Uid = 2;
+    int32 Type = 3;
+    string Balance = 4;
+    string Tag = 5;
+    string DT = 6;
+    string ctime = 7;
+  }
+  repeated Account account = 1;
+}
+
+message AccountsRequest {
+  optional int32 limit = 1;
+}

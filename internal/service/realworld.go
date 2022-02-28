@@ -16,6 +16,9 @@ type RealWorldService struct {
 }
 
 func NewRealWorldService(auth *biz.AuthUseCase, logger log.Logger) *RealWorldService {
+
+	log.NewHelper(logger).Info("NewRealWorldService")
+
 	return &RealWorldService{auth: auth, log: log.NewHelper(logger)}
 }
 

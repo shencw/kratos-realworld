@@ -19,8 +19,9 @@ var ProviderSet = wire.NewSet(
 	NewRealWorldDB,
 	NewRedisConn,
 	NewHiveConn,
-	NewAuthRepo,
 	NewKafkaClient,
+	NewAuthRepo,
+	NewAccountRepo,
 )
 
 // Data .

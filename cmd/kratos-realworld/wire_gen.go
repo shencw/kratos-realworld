@@ -35,7 +35,10 @@ func initApp(logger log.Logger) (*kratos.App, func(), error) {
 	userRepo := data.NewAuthRepo(dataData, logger)
 	authUseCase := biz.NewAuthUseCase(userRepo, logger)
 	realWorldService := service.NewRealWorldService(authUseCase, logger)
-	httpServer := server.NewHTTPServer(confServer, realWorldService, logger)
+	accountRepo := data.NewAccountRepo(dataData, logger)
+	accountUseCase := biz.NewAccountUseCase(accountRepo, logger)
+	accountService := service.NewAccountService(accountUseCase, logger)
+	httpServer := server.NewHTTPServer(confServer, realWorldService, accountService, logger)
 	grpcServer := server.NewGRPCServer(confServer, realWorldService, logger)
 	app := newApp(logger, httpServer, grpcServer)
 	return app, func() {

@@ -3,9 +3,27 @@
 
 openapi: 3.0.3
 info:
-    title: RealWorld API
+    title: ""
     version: 0.0.1
 paths:
+    /api/accounts:
+        get:
+            tags:
+                - Account
+            operationId: Account_Accounts
+            parameters:
+                - name: limit
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AccountsReply'
     /api/articles:
         get:
             tags:
@@ -376,6 +394,33 @@ paths:
                                 $ref: '#/components/schemas/UserReply'
 components:
     schemas:
+        AccountsReply:
+            type: object
+            properties:
+                account:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/AccountsReply_Account'
+        AccountsReply_Account:
+            type: object
+            properties:
+                ID:
+                    type: integer
+                    format: int32
+                Uid:
+                    type: integer
+                    format: int32
+                Type:
+                    type: integer
+                    format: int32
+                Balance:
+                    type: string
+                Tag:
+                    type: string
+                DT:
+                    type: string
+                ctime:
+                    type: string
         AddCommentsRequest:
             type: object
             properties:
@@ -661,4 +706,5 @@ components:
                 image:
                     $ref: '#/components/schemas/Any'
 tags:
+    - name: Account
     - name: RealWorld
