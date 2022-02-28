@@ -36,7 +36,7 @@ func New(opts *Options, kv ...interface{}) *KZapLogger2 {
 
 	zap.RedirectStdLog(l)
 
-	kv = append(kv, "trace_id", tracing.TraceID(), "span_id", tracing.SpanID())
+	kv = append(kv, []interface{}{"trace_id", tracing.TraceID(), "span_id", tracing.SpanID()}...)
 	kLogger := log.With(kZapLogger.NewLogger(logger.zapLogger), kv...)
 	logger.kLogger = kLogger
 

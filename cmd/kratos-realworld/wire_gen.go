@@ -19,13 +19,17 @@ import (
 // Injectors from wire.go:
 
 // initApp init kratos application.
-func initApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*kratos.App, func(), error) {
+func initApp(logger log.Logger) (*kratos.App, func(), error) {
+	confServer, cleanup := conf.NewServerConfig(logger)
+	confData, cleanup2 := conf.NewDataConfig(logger)
 	db := data.NewRealWorldDB(confServer, confData, logger)
 	client := data.NewRedisConn(confData, logger)
 	connection := data.NewHiveConn(confData, logger)
 	saramaClient := data.NewKafkaClient(confData, logger)
-	dataData, cleanup, err := data.NewData(confData, logger, db, client, connection, saramaClient)
+	dataData, cleanup3, err := data.NewData(confData, logger, db, client, connection, saramaClient)
 	if err != nil {
+		cleanup2()
+		cleanup()
 		return nil, nil, err
 	}
 	userRepo := data.NewAuthRepo(dataData, logger)
@@ -35,6 +39,8 @@ func initApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 	grpcServer := server.NewGRPCServer(confServer, realWorldService, logger)
 	app := newApp(logger, httpServer, grpcServer)
 	return app, func() {
+		cleanup3()
+		cleanup2()
 		cleanup()
 	}, nil
 }
