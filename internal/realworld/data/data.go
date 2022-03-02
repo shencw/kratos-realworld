@@ -7,7 +7,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-redis/redis/v8"
 	"github.com/google/wire"
-	"github.com/shencw/kratos-realworld/internal/conf"
+	"github.com/shencw/kratos-realworld/internal/pkg/conf"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"time"
@@ -44,15 +44,15 @@ func NewData(
 	cleanup := func() {
 		logHelper := log.NewHelper(logger)
 		if err := redisCli.Close(); err != nil {
-			logHelper.Errorf("redis connect close error: %s", err.Error())
+			logHelper.Errorf("redis client connect close error: %s", err.Error())
 		}
 		if err := hiveConn.Close(); err != nil {
 			logHelper.Errorf("hive connect close error: %s", err.Error())
 		}
 		if err := kafkaCli.Close(); err != nil {
-			logHelper.Errorf("kafka connect close error: %s", err.Error())
+			logHelper.Errorf("kafka client connect close error: %s", err.Error())
 		}
-		logHelper.Info("closing the data resources")
+		logHelper.Debug("closing the data resources")
 	}
 	return &Data{realWorldDB: realWorldDB, redisCli: redisCli, hiveConn: hiveConn, kafkaCli: kafkaCli}, cleanup, nil
 }

@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
 	v1 "github.com/shencw/kratos-realworld/api/realworld/v1"
-	"github.com/shencw/kratos-realworld/internal/biz"
+	"github.com/shencw/kratos-realworld/internal/realworld/biz"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -16,7 +16,6 @@ type RealWorldService struct {
 }
 
 func NewRealWorldService(auth *biz.AuthUseCase, logger log.Logger) *RealWorldService {
-
 	log.NewHelper(logger).Info("NewRealWorldService")
 
 	return &RealWorldService{auth: auth, log: log.NewHelper(logger)}

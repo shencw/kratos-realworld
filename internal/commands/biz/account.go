@@ -16,7 +16,7 @@ type Account struct {
 }
 
 type AccountRepo interface {
-	GetAccountList(context.Context) ([]Account, error)
+	GetAccountList(context.Context, int32) ([]Account, error)
 }
 
 type AccountUseCase struct {
@@ -28,6 +28,6 @@ func NewAccountUseCase(account AccountRepo, logger log.Logger) *AccountUseCase {
 	return &AccountUseCase{account: account, log: log.NewHelper(logger)}
 }
 
-func (uc *AccountUseCase) GetAccounts(ctx context.Context) ([]Account, error) {
-	return uc.account.GetAccountList(ctx)
+func (uc *AccountUseCase) GetAccounts(ctx context.Context, limit int32) ([]Account, error) {
+	return uc.account.GetAccountList(ctx, limit)
 }

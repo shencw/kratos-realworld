@@ -1,12 +1,21 @@
 package conf
 
 import (
+	"flag"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 	"sync"
 )
+
+var (
+	flagConf string
+)
+
+func init() {
+	flag.StringVar(&flagConf, "conf", "../../configs", "config path, eg: -conf config.yaml")
+}
 
 // ProviderSet is config providers.
 var ProviderSet = wire.NewSet(
@@ -41,7 +50,7 @@ func getFileConfigIns(logger log.Logger) *fileConfig {
 	fileConfigIns.insOnce.Do(func() {
 		fileConfigIns.fileConfig = config.New(
 			config.WithSource(
-				file.NewSource("../../configs"),
+				file.NewSource(flagConf),
 			),
 			config.WithLogger(logger),
 		)

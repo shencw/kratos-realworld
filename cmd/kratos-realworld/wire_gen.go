@@ -9,11 +9,11 @@ package main
 import (
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/shencw/kratos-realworld/internal/biz"
-	"github.com/shencw/kratos-realworld/internal/conf"
-	"github.com/shencw/kratos-realworld/internal/data"
-	"github.com/shencw/kratos-realworld/internal/server"
-	"github.com/shencw/kratos-realworld/internal/service"
+	"github.com/shencw/kratos-realworld/internal/pkg/conf"
+	"github.com/shencw/kratos-realworld/internal/realworld/biz"
+	"github.com/shencw/kratos-realworld/internal/realworld/data"
+	"github.com/shencw/kratos-realworld/internal/realworld/server"
+	"github.com/shencw/kratos-realworld/internal/realworld/service"
 )
 
 // Injectors from wire.go:
@@ -39,7 +39,7 @@ func initApp(logger log.Logger) (*kratos.App, func(), error) {
 	accountUseCase := biz.NewAccountUseCase(accountRepo, logger)
 	accountService := service.NewAccountService(accountUseCase, logger)
 	httpServer := server.NewHTTPServer(confServer, realWorldService, accountService, logger)
-	grpcServer := server.NewGRPCServer(confServer, realWorldService, logger)
+	grpcServer := server.NewGRPCServer(confServer, realWorldService, accountService, logger)
 	app := newApp(logger, httpServer, grpcServer)
 	return app, func() {
 		cleanup3()

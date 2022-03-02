@@ -6,7 +6,7 @@ import (
 	"github.com/go-kratos/kratos/v2/encoding"
 	_ "github.com/go-kratos/kratos/v2/encoding/json"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/shencw/kratos-realworld/internal/biz"
+	"github.com/shencw/kratos-realworld/internal/realworld/biz"
 	"gorm.io/gorm"
 	"time"
 )

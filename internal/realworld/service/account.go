@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
 	v1 "github.com/shencw/kratos-realworld/api/realworld/v1"
-	"github.com/shencw/kratos-realworld/internal/biz"
+	"github.com/shencw/kratos-realworld/internal/realworld/biz"
 )
 
 type AccountService struct {
@@ -22,10 +22,9 @@ func NewAccountService(account *biz.AccountUseCase, logger log.Logger) *AccountS
 
 func (s *AccountService) Accounts(ctx context.Context, in *v1.AccountsRequest) (*v1.AccountsReply, error) {
 	s.log.WithContext(ctx).Infof("Get Accounts")
-	accounts, err := s.account.GetAccounts(ctx)
+	accounts, err := s.account.GetAccounts(ctx, in.GetLimit())
 
 	var accountReply []*v1.AccountsReply_Account
-
 	for _, v := range accounts {
 		accountReply = append(accountReply, &v1.AccountsReply_Account{
 			ID:      v.ID,

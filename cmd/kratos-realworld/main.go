@@ -40,7 +40,7 @@ func newApp(logger log.Logger, httpServer *http.Server, gRPCServer *grpc.Server)
 		kratos.Logger(logger),
 		kratos.Server(
 			httpServer,
-			//gRPCServer,
+			gRPCServer,
 		),
 	)
 }

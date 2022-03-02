@@ -11,6 +11,7 @@ init:
 	go install github.com/go-kratos/kratos/cmd/kratos/v2@latest
 	go install github.com/go-kratos/kratos/cmd/protoc-gen-go-http/v2@latest
 	go install github.com/go-kratos/kratos/cmd/protoc-gen-go-errors/v2@latest
+	go install github.com/envoyproxy/protoc-gen-validate@latest
 	go install github.com/google/gnostic/cmd/protoc-gen-openapi@v0.6.1
 	go install github.com/google/wire/cmd/wire@v0.5.0
 
@@ -42,6 +43,20 @@ api:
  	       --openapi_out==paths=source_relative:. \
 	       $(API_PROTO_FILES)
 
+.PHONY: validate
+# generate validate proto
+validate:
+	protoc --proto_path=. \
+           --proto_path=./third_party \
+           --go_out=paths=source_relative:. \
+           --validate_out=paths=source_relative,lang=go:. \
+           $(API_PROTO_FILES)
+
+.PHONY: run
+# run
+run:
+	go run ./cmd/kratos-realworld/... --conf=./configs/
+
 .PHONY: build
 # build
 build:
@@ -50,7 +65,8 @@ build:
 .PHONY: wire
 # wire
 wire:
-	cd ./cmd/kratos-realworld/ && wire
+	cd ./cmd/kratos-realworld/ && wire && cd ../../
+	cd ./internal/commands && wire
 
 .PHONY: generate
 # generate
@@ -69,7 +85,7 @@ all:
 help:
 	@echo ''
 	@echo 'Usage:'
-	@echo ' make [target]'
+	@echo '  make [target]'
 	@echo ''
 	@echo 'Targets:'
 	@awk '/^[a-zA-Z\-\_0-9]+:/ { \
